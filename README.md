@@ -4,10 +4,13 @@ This repository showcases my DevOps learning journey and mini projects.
 
 ## Projects
 - **AWS Resource Reporter**: A shell script that automates reporting of EC2, S3, Lambda, and IAM resources.
-- **Ansible Multiple Role Automation**: A full working Ansible playbook with roles and tasks assigned accordingly along with site.yml and inventory file
+- **Ansible Multi-Role Automation**: A full working Ansible playbook with roles and tasks assigned accordingly along with site.yml and inventory file.
 - More Projects Coming Soon......
------------------------------------------------------------------------------------------------------------------------------------------------------
-## AWS Resource Tracker
+
+---
+
+## 1. AWS Resource Tracker
+
 A shell script that automates reporting of AWS resources:
 - EC2 Instances
 - S3 Buckets
@@ -15,38 +18,46 @@ A shell script that automates reporting of AWS resources:
 - IAM Users
 
 ### How to Run
+
 ```bash
 chmod +x aws_resource_tracker.sh
 ./aws_resource_tracker.sh
------------------------------------------------------------------------------------------------------------------------------------------------------
+```
 
-## Ansible Multi‑Role Automation
-An Ansible project designed to automate server setup and configuration using modular roles:
+---
 
--Inventory
-Defines host groups (webservers, dbserver, etc.) and their IPs.
+## 2. Ansible Multi-Role Automation
 
-Ensures tasks are targeted to the correct servers.
+An Ansible project designed to automate server setup and configuration using modular roles.
 
--Roles
-#common: Installs base packages (curl, git, vim) and prepares the environment.
+### Inventory
+Defines host groups (webservers, dbserver, etc.) and their IPs. Ensures tasks are targeted to the correct servers.
 
-#nginx: Installs and configures Nginx web server, ensures service is enabled.
+### Roles
 
-#mysql: Installs MySQL, starts the service. (Root password/DB/user tasks were attempted but later scoped down for stability.)
+- **common**: Installs base packages (curl, git, vim) and prepares the environment.
+- **nginx**: Installs and configures Nginx web server, ensures service is enabled.
+- **mysql**: Installs MySQL, starts the service. (Root password/DB/user tasks were attempted but later scoped down for stability.)
+- **users**: Creates and manages system users with proper permissions.
+- **monitoring**: Sets up basic monitoring tools to track server health.
+- **keepalive**: Sets keepalive intervals to target servers.
 
-#users: Creates and manages system users with proper permissions.
+Each role has its own `tasks/`, `handlers/`, and `defaults/` directories, following Ansible best practices.
 
-#monitoring: Sets up basic monitoring tools to track server health.
+### site.yml
 
-#keepalive: Sets keepalive intervals to target servers
+The master playbook that ties all roles together:
+- Runs `common` on all servers
+- Runs `nginx` on webservers
+- Runs `mysql` on dbserver
+- Applies `users`, `monitoring`, and `keepalive` roles across the environment
 
-Each role has its own tasks/, handlers/, and defaults/ directories, following Ansible best practices.
+Provides a single command to configure multiple servers consistently:
 
--site.yml
-The master playbook that ties all roles together.
+### How to Run
 
-Runs common on all servers, nginx on webservers, mysql on dbserver, and applies users, monitoring, and security roles across the environment.
+```bash
+ansible-playbook -i inventory site.yml
+```
 
-Provides a single command to configure multiple servers consistently: ansible-playbook -i inventory site.yml
-----------------------------------------------------------------------------------------------------------------------------------------------------
+
