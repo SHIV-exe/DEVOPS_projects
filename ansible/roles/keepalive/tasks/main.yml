@@ -1,0 +1,22 @@
+---
+# Role: keepalive
+# Purpose: Configure SSH server to keep connections alive.
+
+- name: Ensure SSH keepalive settings are present
+  lineinfile:
+    path: /etc/ssh/sshd_config
+    regexp: '^ClientAliveInterval'
+    line: 'ClientAliveInterval 60'
+    state: present
+
+- name: Ensure SSH keepalive count is present
+  lineinfile:
+    path: /etc/ssh/sshd_config
+    regexp: '^ClientAliveCountMax'
+    line: 'ClientAliveCountMax 3'
+    state: present
+
+- name: Restart SSH service to apply changes
+  service:
+    name: ssh
+    state: restarted

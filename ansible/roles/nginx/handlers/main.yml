@@ -1,0 +1,13 @@
+---
+# Handlers for nginx role
+# Purpose: Define actions that should only run when notified by tasks.
+# Example: Restarting Nginx after configuration changes.
+
+- name: Restart Nginx
+  service:
+    name: nginx
+    state: restarted
+  # This handler restarts the Nginx service.
+  # It will only run if a task includes "notify: Restart Nginx"
+  # (e.g., when the nginx.conf template is updated).
+

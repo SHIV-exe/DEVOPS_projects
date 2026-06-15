@@ -1,0 +1,17 @@
+---
+# Role: users
+# Purpose: Create basic system users and groups on Ubuntu hosts.
+# This role ensures a group and user exist with a home directory.
+
+- name: Ensure application group exists
+  group:
+    name: appgroup
+    state: present
+
+- name: Create application user
+  user:
+    name: appuser
+    group: appgroup
+    shell: /bin/bash
+    create_home: yes
+    state: present

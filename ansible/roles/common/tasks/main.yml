@@ -1,0 +1,38 @@
+---
+# Role: common
+# Purpose: Apply baseline configuration across all Ubuntu servers.
+# This role updates packages, installs essential utilities,
+# sets timezone, and configures a simple MOTD banner.
+
+- name: Update apt cache
+  apt:
+    update_cache: yes
+
+- name: Upgrade all packages to latest
+  apt:
+    upgrade: dist
+    force_apt_get: yes
+
+- name: Install base packages
+  apt:
+    name:
+      - curl
+      - git
+      - vim
+      - unzip
+      - htop
+    state: present
+
+- name: Set timezone to UTC
+  timezone:
+    name: UTC
+
+- name: Configure MOTD banner
+  copy:
+    dest: /etc/motd
+    content: |
+      Welcome to {{ inventory_hostname }}
+      Managed by Ansible
+
+
+

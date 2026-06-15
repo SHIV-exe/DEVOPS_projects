@@ -1,0 +1,20 @@
+---
+# Role: monitoring
+# Purpose: Install basic monitoring tools on Ubuntu hosts.
+# This role installs utilities to check system performance and logs.
+
+- name: Install monitoring packages
+  apt:
+    name:
+      - htop        # interactive process viewer
+      - sysstat     # performance monitoring (iostat, mpstat, sar)
+      - net-tools   # network utilities (ifconfig, netstat)
+      - tree        # directory structure viewer
+    state: present
+    update_cache: yes
+
+- name: Ensure sysstat service is enabled
+  service:
+    name: sysstat
+    state: started
+    enabled: yes

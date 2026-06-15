@@ -1,0 +1,21 @@
+---
+# Master Playbook: site.yml
+# Purpose: Apply roles to the correct groups of servers.
+
+- hosts: webservers
+  become: yes
+  roles:
+    - common
+    - nginx
+    - users
+    - monitoring
+    - keepalive
+
+- hosts: dbservers
+  become: yes
+  roles:
+    - common
+    - mysql
+    - users
+    - monitoring
+    - keepalive

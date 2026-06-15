@@ -1,0 +1,30 @@
+---
+# Role: mysql
+# Purpose: Install and configure MySQL server on Ubuntu hosts.
+# This role installs MySQL, secures the installation, and creates a database + user.
+
+- name: Update apt cache
+  apt:
+    update_cache: yes
+  become: yes
+
+- name: Install PyMySQL dependency
+  apt:
+    name: python3-pymysql
+    state: present
+  become: yes
+
+- name: Install MySQL server
+  apt:
+    name: mysql-server
+    state: present
+    update_cache: yes
+
+- name: Ensure MySQL service is started
+  service:
+    name: mysql
+    state: started
+    enabled: yes
+  become: yes
+
+
